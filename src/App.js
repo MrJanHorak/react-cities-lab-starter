@@ -1,16 +1,36 @@
 // IMPORT useState
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
+
+import imagesArr from "./imageData.js";
 // IMPORT imageData.js AND STORE IT IN A VARIABLE CALLED imagesArr
 
 export default function App() {
   // USE useState TO CREATE  [bigImage, setBigImage]
   // AND SET IT TO THE IMAGE URL OF THE FIRST ELEMENT IN THE ARRAY
-
+  const [bigImage, setBigImage] = useState(imagesArr[0].img);
+  const [smallImage, setSmallImage] = useState(0);
   // CREATE A HANDLE CLICK FUNCTION THAT ACCEPTS AN IMAGE URL
   // THE FUNCTION SHOULD CALL setBigImage AND PASS IT THE URL
 
+  const handleClick = (imgUrl, key) => {
+    setBigImage(imgUrl);
+    setSmallImage(key);
+  };
   // CREATE A VARIABLE CALLED images THAT LOOPs OVER THE imagesArr AND RETURNS AN <IMG> ELEMENT
+
+  const images = imagesArr.map((element, index) => {
+    return (
+      <img
+      src={element.img}
+      className={index === smallImage ? 'thumb selected' : 'thumb'}
+        alt={element.city}
+        key={index}
+        onClick={() => handleClick(element.img, index)}
+      />
+    );
+  });
+
   // ASSIGN ALL OF THE PROPERTIES THAT IT NEEDS: src, alt, className, key
   // ALSO ASSIGN AN onClick EVENT THAT CALL THE HANDLE EVENT AND PASSES IT THE IMG URL
 
@@ -18,9 +38,12 @@ export default function App() {
     <div className="App">
       <h1>Cities Of The World</h1>
       <div id="wrapper">
-        <div id="thumbnails">{/* RENDER THE IMAGES ARRAY  */}</div>
+        <div id="thumbnails">
+          {/* RENDER THE IMAGES ARRAY  */}
+          {images}
+        </div>
         {/* THE SRC IMAGE URL SHOULD BE SET TO THE VALUE THAT IS STORED IN bigImage */}
-        {/* <img src="" id="bigimage" alt='bigImaage'/> */}
+        <img src={bigImage} id="bigimage" alt="bigImaage" />
       </div>
     </div>
   );
